@@ -37,25 +37,26 @@ while hasFrame(videoReader)
     BWsdil = imdilate(BWs,[se90 se0]);
     matched_res_1 = match(BWsdil,brown_mask);
     max_point = find(matched_res_1==max(matched_res_1,[],'all'));
-    max_col_r = int32(ceil(max_point/1080));
-    max_row_r = max_point-(max_col_r-1)*1080;
-    max_col_r = max_col_r + round(585/2);
-    max_col_l = max_col_r - 585;
-    max_row_r = max_row_r + 572/2;
-    max_row_l = max_row_r - 572;
-    target_area_1 = BWsdil(max(max_row_l,1):min(max_row_r,1080),max(max_col_l,1):min(max_col_r,1920));
+%     matched_res_1 = matched_res_1/max(matched_res_1,[],'all');
+%     max_col_r = int32(ceil(max_point/1080));
+%     max_row_r = max_point-(max_col_r-1)*1080;
+%     max_col_r = max_col_r + round(585/2);
+%     max_col_l = max_col_r - 585;
+%     max_row_r = max_row_r + 572/2;
+%     max_row_l = max_row_r - 572;
+%     target_area_1 = BWsdil(max(max_row_l,1):min(max_row_r,1080),max(max_col_l,1):min(max_col_r,1920));
 
 %     % Step 4: Fill Interior Gaps
     BWdfill = imfill(BWsdil,'holes');
-    matched_res = match(BWdfill,instrument_mask);
-    max_point = find(matched_res==max(matched_res,[],'all'));
-    max_col_r = int32(ceil(max_point/1080));
-    max_row_r = max_point-(max_col_r-1)*1080;
-    max_col_r = max_col_r + round(657/2);
-    max_col_l = max_col_r - 657;
-    max_row_r = max_row_r + round(271/2);
-    max_row_l = max_row_r - 271;
-    target_area = BWdfill(max(max_row_l,1):min(max_row_r,1080),max(max_col_l,1):min(max_col_r,1920));
+%     matched_res = match(BWdfill,instrument_mask);
+%     max_point = find(matched_res==max(matched_res,[],'all'));
+%     max_col_r = int32(ceil(max_point/1080));
+%     max_row_r = max_point-(max_col_r-1)*1080;
+%     max_col_r = max_col_r + round(657/2);
+%     max_col_l = max_col_r - 657;
+%     max_row_r = max_row_r + round(271/2);
+%     max_row_l = max_row_r - 271;
+%     target_area = BWdfill(max(max_row_l,1):min(max_row_r,1080),max(max_col_l,1):min(max_col_r,1920));
 
 %     if (initialized)
 %         BWdfill = BWdfill & ~back_BWDfill & ~back_BWDfill_1 & ~back_BWDfill_2 & ~back_BWDfill_3 & ~back_BWDfill_4;
@@ -72,10 +73,9 @@ while hasFrame(videoReader)
     % display
     subplot(3,1,1);
     imshow(frame);
-    subplot(3,1,2);
-    imshow(target_area_1);
+    imshow(BWsdil);
     subplot(3,1,3);
-    imshow(target_area);
+    imshow(BWdfill);
  %   title(sprintf('Current Time = %.3f sec', videoReader.CurrentTime));
     pause(1/(videoReader.FrameRate*30));
     break;
