@@ -1,0 +1,6 @@
+function removed_img = remove_small_spots(bin_img)
+    width = size(bin_img,2);
+    height = size(bin_img,1);
+    I = ones(50,50);
+    conv2(bin_img,I,'
+end
