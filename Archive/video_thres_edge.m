@@ -73,6 +73,7 @@ while hasFrame(videoReader)
     % display
     subplot(3,1,1);
     imshow(frame);
+    subplot(3,1,2);
     imshow(BWsdil);
     subplot(3,1,3);
     imshow(BWdfill);
