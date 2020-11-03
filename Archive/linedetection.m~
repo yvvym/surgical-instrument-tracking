@@ -40,33 +40,27 @@ figure, imshow(rotI), hold on
 
 max_len = 0;
 num_threashold = 4;
-cluster_representative_line = lines(1);
+cluster_representative_line = lines(0);
 left_points = [];
 right_points = [];
 cluster_num = 1;
 
 
 for k = 1:length(lines)
-    if (cluster_representative_line.rho ~= lines(k).rho | cluster_representative_line.theta ~= lines(k).theta)
-        cluster_representative_line = lines(k);
-        cluster_num = cluster_num + 1;
-    end
-    
-    if (cluster_representative_line.point1 == lines(k).point1 & cluster_representative_line.point2 == lines(k).point2)
-        left_points(cluster_num,:) = cluster_representative_line.point1;
-        right_points(cluster_num,:) = cluster_representative_line.point2;
-    end
-    if (lines(k).point1(2) < left_points(cluster_num,2))
-        left_points(cluster_num,:) = lines(k).point1;
-    end
-    if (lines(k).point2(2) > right_points(cluster_num,2))
-        right_points(cluster_num,:) = lines(k).point2;
+    if (cluster_representative_line.rho == lines(k).rho && cluster_representative_line.theta == lines(k).theta)
+       if (cluster_representative_line.point1 == lines(k).point1 && cluster_representative_line.point2 == lines(k).point2)
+           left_points(cluster_num) = cluster_representative_line.point1;
+           right_points(cluster_num) = cluster_representative_line.point2;
+       end
+       if (lines(k).point1 <left_points(cluster_num))
+          left_points(cluster_num,:) = lines(k).point1;
+       end
+       if (lines(k).point2 >left_points(cluster_num))
     end
 %    xy = [lines(k).point1; lines(k).point2]
 %    plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
 %    hold on
 end
-
 hold off
 
 
