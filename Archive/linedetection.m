@@ -47,6 +47,8 @@ cluster_num = 1;
 
 
 for k = 1:length(lines)
+    % to eliminate the border, **TODO: figure out the threasholds**
+    %if (lines(k).point1(1) <= ?? ...)
     if (cluster_representative_line.rho ~= lines(k).rho | cluster_representative_line.theta ~= lines(k).theta)
         cluster_representative_line = lines(k);
         cluster_num = cluster_num + 1;
@@ -66,6 +68,15 @@ for k = 1:length(lines)
 %    plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
 %    hold on
 end
+
+for i = 1:length(left_points)
+   point1 = left_points(i,:);
+   point2 = right_points(i,:);
+   xy = [point1(1),point1(2);point2(1),point2(2)];
+   plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
+   hold on
+end
+
 
 hold off
 
