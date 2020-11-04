@@ -1,42 +1,43 @@
-I = imread('target.png');
+function linedetection(I)
+%I = imread('target.png');
 [~,thre_img] = createMask_ycbcr(I);
 I = rgb2gray(thre_img);
 %I = I(:,1:1300);
 % I = imread('circuit.tif');
-figure;
-imshow(I)
+%figure;
+%imshow(I)
 %rotI = imrotate(I,33,'crop');
 %figure;
 %imshow(rotI)
 rotI = I;
 BW = edge(rotI,'canny');
-figure;
-imshow(BW);
+%figure;
+%imshow(BW);
 % Compute the Hough transform of the binary image returned by edge.
 [H,theta,rho] = hough(BW);
 % Display the transform, H, returned by the hough function.
-figure
-imshow(imadjust(rescale(H)),[],...
-       'XData',theta,...
-       'YData',rho,...
-       'InitialMagnification','fit');
-xlabel('\theta (degrees)')
-ylabel('\rho')
-axis on
-axis normal 
-hold on
-colormap(gca,hot)
+% figure
+% imshow(imadjust(rescale(H)),[],...
+%        'XData',theta,...
+%        'YData',rho,...
+%        'InitialMagnification','fit');
+% xlabel('\theta (degrees)')
+% ylabel('\rho')
+% axis on
+% axis normal 
+% hold on
+% colormap(gca,hot)
 % Find the peaks in the Hough transform matrix, H, using the houghpeaks function.
 P = houghpeaks(H,5,'threshold',ceil(0.3*max(H(:))));
 % Superimpose a plot on the image of the transform that identifies the peaks.
 x = theta(P(:,2));
 y = rho(P(:,1));
-plot(x,y,'s','color','black');
+%plot(x,y,'s','color','black');
 
 % Find lines in the image using the houghlines function.
 lines = houghlines(BW,theta,rho,P,'FillGap',5,'MinLength',5);
 % Create a plot that displays the original image with the lines superimposed on it.
-figure, imshow(rotI), hold on
+imshow(rotI), hold on
 
 max_len = 0;
 num_threashold = 4;
@@ -68,7 +69,7 @@ for k = 1:length(lines)
 %    plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
 %    hold on
 end
-
+changed= 0;
 for i = 1:length(left_points)
    point1 = left_points(i,:);
    point2 = right_points(i,:);
@@ -79,8 +80,7 @@ end
 
 
 hold off
-
-
+%end
 %   for k = 1:length(lines)
 %     xy = [lines(k).point1; lines(k).point2];
 %  %  xy = [219,949;1064,861];
@@ -117,7 +117,7 @@ hold off
 %       max_len = len;
 %       xy_long = xy;
 %    end
-%   end
+   end
 % % highlight the longest line segment
 % plot(xy_long(:,1),xy_long(:,2),'LineWidth',2,'Color','red');
 % hold off
