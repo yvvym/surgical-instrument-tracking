@@ -1,5 +1,5 @@
-function linedetection(I)
-%I = frame;
+%function linedetection(I)
+I = frame;
 %[~,I] = createMask_ycbcr(I);
 I = rgb2gray(I);
 [Gmag, Gdir] = imgradient(I,'prewitt');
@@ -52,12 +52,9 @@ for k = 1:length(lines)
     % to eliminate the border, **TODO: figure out the threasholds**
     if ((cluster_representative_line.rho ~= lines(k).rho) || (cluster_representative_line.theta ~= lines(k).theta))
         cluster_representative_line = lines(k);
-        if(distance(right_points(cluster_num,:),left_points(cluster_num,:)) > 200)
-            % it means that the previous line is actually not a dot!
-            cluster_num = cluster_num + 1;
-        end
+        cluster_num = cluster_num + 1;
     elseif(distance(right_points(cluster_num,:),lines(k).point1) > 200)
-        if(distance(right_points(cluster_num,:),left_points(cluster_num,:)) > 200)
+        if(distance(right_points(cluster_num,:),left_points(cluster_num,:)) > 30)
             % it means that the previous line is actually not a dot!
             cluster_num = cluster_num + 1;
         end
@@ -83,22 +80,16 @@ for i = 1:cluster_num
    std_pixel(i) = get_std(points,I);
    std_dir(i) = get_std(points,Gdir);
    std_mag(i) = get_std(points,Gmag);
-end
-
-[~,idx_pixel] = mink(std_pixel,3);
-[~,idx_dir] = mink(std_dir,3);
-[~,idx_mag] = mink(std_mag,4);
-
-final_idx = intersect(intersect(idx_pixel,idx_dir),idx_mag);
-for i = 1:length(final_idx)
-   point1 = left_points(final_idx(i),:);
-   point2 = right_points(final_idx(i),:);
    xy = [point1(1),point1(2);point2(1),point2(2)];
-   plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
+    if(i==6)
+        plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','red');
+    end
    hold on
 end
+
+
 hold off
-end
+%end
 % % highlight the longest line segment
 % plot(xy_long(:,1),xy_long(:,2),'LineWidth',2,'Color','red');
 % hold off
